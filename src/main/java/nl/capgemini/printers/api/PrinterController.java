@@ -36,6 +36,8 @@ public class PrinterController {
 
     }
 
+
+
     @GetMapping("{id}")
     public ResponseEntity<Printer> findById(@PathVariable long id) {
         for(Printer printer : content) {
@@ -48,6 +50,38 @@ public class PrinterController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<Printer> updateById(@PathVariable long id, @RequestBody Printer input) {
+        for(Printer printer : content) {
+
+            if(id == printer.getId()) {
+                printer.setPrice(input.getPrice());
+                printer.setType(input.getType());
+
+                return ResponseEntity.ok(printer);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Printer> deleteById(@PathVariable long id) {
+        for(Printer printer : content) {
+
+            if(id == printer.getId()) {
+                // NB: You have to override equals and hashCode in Printer to do this correctly!!!
+                this.content.remove(printer);
+                return ResponseEntity.noContent().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+
+
+    // this methods start when the spring boot application starts
     @PostConstruct
     public void init() {
         {
