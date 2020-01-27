@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 function print() {
 }
-=======
 const api = "http://localhost:8080/api/printers";
 
 function getData(){
@@ -17,6 +15,26 @@ function getData(){
                 xhttp.send();
 }
 
+ function sendPrinter(){
+                var type = document.getElementById("type").value;
+                var price = document.getElementById("price").value;
+
+                var printer = {type:type, price:price};
+                postData(JSON.stringify(printer));
+ }
+
+ function postData(data){
+     var xhttp = new XMLHttpRequest();
+                 xhttp.onreadystatechange = function() {
+                         if (this.readyState == 4 && this.status == 201) {
+                           document.getElementById("demo").innerHTML = this.responseText;
+                         }
+                 };
+                 xhttp.open("POST", api, true);
+                 xhttp.setRequestHeader("Content-type", "application/json");
+                 xhttp.send(data);
+         }
+
 function parseJson(data) {
     // hopefully data contains a String containing a list of printers
     let printers = JSON.parse(data);
@@ -26,4 +44,3 @@ function parseJson(data) {
     }
     // and you can do a lot more of it
   }
->>>>>>> Add vanilla js xmlHttpRequest
