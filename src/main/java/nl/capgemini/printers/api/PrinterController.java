@@ -2,6 +2,7 @@ package nl.capgemini.printers.api;
 
 
 import nl.capgemini.printers.model.Printer;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,11 +73,20 @@ public class PrinterController {
             if(id == printer.getId()) {
                 // NB: You have to override equals and hashCode in Printer to do this correctly!!!
                 this.content.remove(printer);
+                Printer victim = new Printer();
+                victim.setId(3);
+                this.content.remove(victim);
                 return ResponseEntity.noContent().build();
             }
         }
         return ResponseEntity.notFound().build();
     }
+
+    public void demo(Printer p) {
+        this.content.remove(p);
+    }
+
+
 
 
 
