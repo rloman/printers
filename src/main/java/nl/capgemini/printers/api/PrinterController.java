@@ -73,9 +73,16 @@ public class PrinterController {
             if(id == printer.getId()) {
                 // NB: You have to override equals and hashCode in Printer to do this correctly!!!
                 this.content.remove(printer);
+
+                // this below, will fail is the equals and hashCode is not overwritten.
+                // I left it here for learning purposes
+                /*
                 Printer victim = new Printer();
                 victim.setId(3);
                 this.content.remove(victim);
+                */
+
+
                 return ResponseEntity.noContent().build();
             }
         }
