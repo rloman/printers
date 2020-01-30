@@ -1,7 +1,6 @@
 package nl.capgemini.printers.persistence;
 
 import nl.capgemini.printers.model.Printer;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

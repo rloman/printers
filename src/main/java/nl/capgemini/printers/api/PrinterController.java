@@ -4,12 +4,10 @@ package nl.capgemini.printers.api;
 import nl.capgemini.printers.model.Printer;
 import nl.capgemini.printers.persistence.PrinterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
