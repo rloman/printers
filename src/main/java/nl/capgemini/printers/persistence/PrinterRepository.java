@@ -37,7 +37,4 @@ public class PrinterRepository {
 
         return Optional.empty();
     }
-
-
-
 }
