@@ -2,27 +2,27 @@ package nl.capgemini.printers.api;
 
 
 import nl.capgemini.printers.model.Printer;
-import org.springframework.http.HttpMethod;
+import nl.capgemini.printers.persistence.PrinterRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/printers")
 public class PrinterController {
 
-    private static long counter = 0;
 
-    List<Printer> content = new ArrayList<>();
-
+    @Autowired
+    private PrinterRepository repository;
 
 
     @GetMapping
     public List<Printer> list() {
-        return content;
+        return this.repository.findAll();
     }
 
 
@@ -30,10 +30,7 @@ public class PrinterController {
     @PostMapping
     public Printer create(@RequestBody  Printer printer) { // here, the default constructor is invoked.
 
-        printer.setId(++counter);
-        this.content.add(printer);
-
-        return printer;
+        return this.repository.save(printer);
 
     }
 
@@ -41,14 +38,16 @@ public class PrinterController {
 
     @GetMapping("{id}")
     public ResponseEntity<Printer> findById(@PathVariable long id) {
-        for(Printer printer : content) {
 
-            if(id == printer.getId()) {
-                return ResponseEntity.ok(printer);
-            }
+        Optional<Printer> optionalPrinter = this.repository.findById(id);
+
+        if(optionalPrinter.isPresent()) {
+            Printer printertje = optionalPrinter.get();
+            return  ResponseEntity.ok(printertje);
         }
-
-        return ResponseEntity.notFound().build();
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("{id}")
