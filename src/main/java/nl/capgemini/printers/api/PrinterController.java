@@ -59,7 +59,7 @@ public class PrinterController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Printer> deleteById(@PathVariable long id) {
+    public ResponseEntity<?> deleteById(@PathVariable long id) {
         boolean success = this.repository.deleteById(id);
 
         if (success) {
