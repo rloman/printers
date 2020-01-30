@@ -26,14 +26,11 @@ public class PrinterController {
     }
 
 
-
     @PostMapping
-    public Printer create(@RequestBody  Printer printer) { // here, the default constructor is invoked.
+    public Printer create(@RequestBody Printer printer) { // here, the default constructor is invoked.
 
         return this.repository.save(printer);
-
     }
-
 
 
     @GetMapping("{id}")
@@ -41,82 +38,46 @@ public class PrinterController {
 
         Optional<Printer> optionalPrinter = this.repository.findById(id);
 
-        if(optionalPrinter.isPresent()) {
+        if (optionalPrinter.isPresent()) {
             Printer printertje = optionalPrinter.get();
-            return  ResponseEntity.ok(printertje);
-        }
-        else {
+            return ResponseEntity.ok(printertje);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Printer> updateById(@PathVariable long id, @RequestBody Printer input) {
-        for(Printer printer : content) {
 
-            if(id == printer.getId()) {
-                printer.setPrice(input.getPrice());
-                printer.setType(input.getType());
+        Optional<Printer> optionalPrinter = this.repository.updateById(id, input);
+        if (optionalPrinter.isPresent()) {
+            return ResponseEntity.ok(optionalPrinter.get());
 
-                return ResponseEntity.ok(printer);
-            }
+        } else {
+            return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Printer> deleteById(@PathVariable long id) {
-        for(Printer printer : content) {
+        boolean success = this.repository.deleteById(id);
 
-            if(id == printer.getId()) {
-                // NB: You have to override equals and hashCode in Printer to do this correctly!!!
-                this.content.remove(printer);
+        if (success) {
+            return ResponseEntity.noContent().build();
 
-                // this below, will fail is the equals and hashCode is not overwritten.
-                // I left it here for learning purposes
-                /*
-                Printer victim = new Printer();
-                victim.setId(3);
-                this.content.remove(victim);
-                */
-
-
-                return ResponseEntity.noContent().build();
-            }
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
-
-    public void demo(Printer p) {
-        this.content.remove(p);
-    }
-
-
-
-
-
 
     // this methods start when the spring boot application starts
     @PostConstruct
     public void init() {
-        {
-            Printer first = new Printer(++counter);
-            first.setPrice(250.00);
-            first.setType("Poedel");
-            content.add(first);
-        }
-        {
-            Printer first = new Printer(++counter);
-            first.setPrice(450.00);
-            first.setType("Crealitty");
-            content.add(first);
-        }
-        {
-            Printer first = new Printer(++counter);
-            first.setPrice(2150.00);
-            first.setType("Francien");
-            content.add(first);
+        for (int i = 0; i < 3; i++) {
+            Printer printer = new Printer();
+            printer.setPrice(250.00);
+            printer.setType("Poedel");
+            this.repository.save(printer);
         }
     }
 }

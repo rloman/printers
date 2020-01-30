@@ -36,4 +36,27 @@ public class PrinterRepository {
 
         return Optional.empty();
     }
+
+    public Optional<Printer> updateById(long id, Printer input) {
+
+        Optional<Printer> optionalPrinter = this.findById(id);
+        if(optionalPrinter.isPresent()) {
+            Printer target = optionalPrinter.get();
+            target.setType(input.getType());
+            target.setPrice(input.getPrice());
+        }
+
+        return optionalPrinter;
+    }
+
+    public boolean deleteById(long id) {
+        Optional<Printer> optionalPrinter = this.findById(id);
+        if(optionalPrinter.isPresent()) {
+            this.content.remove(optionalPrinter.get());
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
